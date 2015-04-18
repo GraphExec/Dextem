@@ -5,10 +5,24 @@ using System.Xml.Linq;
 
 namespace Dextem
 {
+    /// <summary>
+    /// Processes &lt;exception&gt; nodes. This class cannot be inherited.
+    /// </summary>
     public sealed class ExceptionProcessor : BaseProcessor
     {
+        /// <summary>
+        /// Creates a new instance of ExceptionProcessor using the given ProcessorRegistry.
+        /// </summary>
+        /// <param name="registry">The ProcessorRegistry instance to use.</param>
         public ExceptionProcessor(ProcessorRegistry registry) : base(registry) { }
 
+        /// <summary>
+        /// Executes processing of the current &lt;exception&gt; element.
+        /// </summary>
+        /// <param name="writer">The current StringWriter to use.</param>
+        /// <param name="root">The current root element to process.</param>
+        /// <param name="context">The current processing context.</param>
+        /// <returns>The updated processing context.</returns>
         public override Dictionary<XName, string> Process(StringWriter writer, XElement root, Dictionary<XName, string> context)
         {
             string exName = root.Attribute("cref").Value.Substring(2);

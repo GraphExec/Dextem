@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Dextem.Build
 {
@@ -22,7 +18,7 @@ namespace Dextem.Build
 
             var bytes = ASCIIEncoding.UTF8.GetBytes(md);
 
-            using (var file = new FileStream("Dextem.md", FileMode.Create))
+            using (var file = new FileStream(args[1], FileMode.Create))
             {
                 file.Write(bytes, 0, bytes.Length);
             }

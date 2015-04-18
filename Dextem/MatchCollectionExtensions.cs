@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace Dextem
 {
-    public static class MatchCollectionExtensions
+    internal static class MatchCollectionExtensions
     {
-        public static List<Match> ToList(this MatchCollection _this)
+        internal static List<Match> ToList(this MatchCollection _this)
         {
             var list = new List<Match>();
 

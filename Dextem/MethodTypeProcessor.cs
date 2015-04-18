@@ -7,10 +7,24 @@ using System.Xml.Linq;
 
 namespace Dextem
 {
+    /// <summary>
+    /// Controls name processing of method 'M:' and type 'T:' &lt;member&gt; nodes. This class cannot be inherited.
+    /// </summary>
     public sealed class MethodTypeProcessor : BaseProcessor
     {
+        /// <summary>
+        /// Creates a new instance of MethodTypeProcessor using the given ProcessorRegistry.
+        /// </summary>
+        /// <param name="registry">The ProcessorRegistry instance to use.</param>
         public MethodTypeProcessor(ProcessorRegistry registry) : base(registry) { }
 
+        /// <summary>
+        /// Executes name processing of the curernt method 'M:' or type 'T:' &lt;member&gt; element.
+        /// </summary>
+        /// <param name="writer">The current StringWriter to use.</param>
+        /// <param name="root">The current root element to process.</param>
+        /// <param name="context">The current processing context.</param>
+        /// <returns>The updated processing context.</returns>
         public override Dictionary<XName, string> Process(StringWriter writer, XElement root, Dictionary<XName, string> context)
         {
             var memberName = root.Attribute(XName.Get("name")).Value;
