@@ -37,7 +37,43 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyProcessor.cs" />
+    <Compile Include="BaseConverter.cs" />
+    <Compile Include="BaseProcessor.cs" />
+    <Compile Include="DextemConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DocumentProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExceptionProcessor.cs" />
+    <Compile Include="IElementProcessor.cs" />
+    <Compile Include="InternalConverter.cs" />
+    <Compile Include="MatchCollectionExtensions.cs" />
+    <Compile Include="MemberNameProcessor.cs" />
+    <Compile Include="MemberProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MembersProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MethodTypeProcessor.cs" />
+    <Compile Include="ParameterProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProcessorRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemarksProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReturnsProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SummaryProcessor.cs" />
+    <Compile Include="TypeParameterProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="XNodeExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
