@@ -9,7 +9,7 @@ Meant to run Post-build, **Dextem.Build** is a console application that uses the
 Simply add a line to your Post-Build event:
 
 ```
-Dextem.Build.exe $(TargetDir)$(ProjectName).XML
+Dextem.Build.exe $(TargetDir)$(ProjectName).XML <filename>.md
 ```
 
 > **Note**: The target project must be configured to output its XML documentation file. [More Info](https://msdn.microsoft.com/en-us/library/3260k4x7.aspx)
