@@ -2,6 +2,10 @@
 
 **Dextem** is a simple .NET library to convert Visual Studio XML Documentation to GitHub Markdown. It is based on this nice, succinct Gist: [dx2md](https://gist.github.com/formix/515d3d11ee7c1c252f92). 
 
+# Dextem API Reference
+
+See the result of Dextem at work. It processed its xml documentation and produced the following results: [Dextem API Reference](https://github.com/GraphExec/Dextem/wiki/Dextem-API-Reference).
+
 ## Dextem.Build
 
 Meant to run Post-build, **Dextem.Build** is a console application that uses the default **Dextem** API to create a markdown file based on a project's XML Documentation file.
