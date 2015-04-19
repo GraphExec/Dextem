@@ -54,24 +54,68 @@ namespace Dextem
             return base.Process(writer, root, context);
         }
 
-        private string RearrangeParametersInContext(XElement methodMember, string memberName, Dictionary<XName, string> context)
+        private List<string> GetParameterTypes(string memberName)
         {
-            string methodPrototype = memberName;
-            Match match = Regex.Match(methodPrototype, "\\((.*)\\)");
-            string parameterString = match.Groups[1].Value.Replace(" ", "");
-            string[] parameterTypes = parameterString.Split(',');
+            var parameterTypes = new List<string>();
 
-            if (parameterTypes.Length == 0)
+            Match match = Regex.Match(memberName, "\\((.*)\\)");
+
+            // Groups[0] = (Type, Type, Type)
+            // Groups[1] = Type, Type, Type
+
+            if (match.Groups.Count < 1)
             {
-                // nothing to do...
-                return methodPrototype;
+                return parameterTypes;
             }
 
+            string rawParameterString = string.Empty;
+
+            if (match.Groups.Count == 1)
+            {
+                rawParameterString = match.Groups[0].Value.Replace("(", "").Replace(")", "").Replace(" ", "");
+            }
+
+            if (match.Groups.Count == 2)
+            {
+                rawParameterString = match.Groups[1].Value.Replace(" ", "");
+            }
+
+            var rawParameterArray = rawParameterString.Split(',');
+
+            for (var i = 0; i < rawParameterArray.Length; i++)
+            {
+                var raw = rawParameterArray[i];
+
+                var isGeneric = (raw.Contains("{") || raw.Contains("<") || raw.Contains("}") || raw.Contains(">"));
+                var isOpenOnly = (isGeneric && !(raw.Contains("}") || raw.Contains(">")));
+
+                if (!isGeneric || isOpenOnly)
+                {
+                    parameterTypes.Add(raw);
+                    continue;
+                }
+
+                var isCloseOnly = (isGeneric && !(raw.Contains("{") || raw.Contains("<")));
+
+                if (isCloseOnly)
+                {
+                    parameterTypes[parameterTypes.Count - 1] += raw;
+                    continue;
+                }
+            }
+
+            return parameterTypes;
+        }
+
+        private string RearrangeParametersInContext(XElement methodMember, string memberName, Dictionary<XName, string> context)
+        {
+            var parameterTypes = this.GetParameterTypes(memberName);
+
             List<XElement> paramElems = new List<XElement>(methodMember.Elements("param"));
-            if (parameterTypes.Length != paramElems.Count)
+            if (parameterTypes.Count != paramElems.Count)
             {
                 // the parameter count do not match, we can't do the rearrangement.
-                return methodPrototype;
+                return memberName;
             }
 
             string newParamString = "";
@@ -88,7 +132,7 @@ namespace Dextem
                 context[paramName] = paramType;
             }
 
-            string newMethodPrototype = Regex.Replace(methodPrototype,
+            string newMethodPrototype = Regex.Replace(memberName,
                 "\\(.*\\)",
                 "(" + newParamString + ")");
 
