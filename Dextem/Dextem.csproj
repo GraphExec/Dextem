@@ -36,9 +36,6 @@
     <DocumentationFile>bin\Release\Dextem.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AssemblyProcessor.cs" />
     <Compile Include="BaseConverter.cs" />
     <Compile Include="BaseProcessor.cs" />
@@ -71,6 +68,9 @@
     <Compile Include="ReturnsProcessor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StringExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SummaryProcessor.cs" />
     <Compile Include="TypeParameterProcessor.cs">
       <SubType>Code</SubType>
@@ -79,7 +79,17 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>J:\Code\VS2013\GraphExec\Dextem\Dextem.Build\bin\Release\Dextem.Build.exe $(TargetDir)$(ProjectName).XML Dextem.md</PostBuildEvent>
+    <PostBuildEvent>start J:\Code\VS2013\GraphExec\Dextem\Dextem.Build\bin\Release\Dextem.Build.exe $(TargetDir)$(ProjectName).XML Dextem.md
+
+start J:\Programs\Nuget\nuget spec
+
+mkdir lib
+mkdir content
+
+copy $(TargetPath) lib
+copy $(TargetDir)$(ProjectName).md content
+
+start J:\Programs\Nuget\nuget pack Dextem.csproj -Prop Configuration=Release</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
