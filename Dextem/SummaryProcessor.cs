@@ -26,7 +26,7 @@ namespace Dextem
         public override Dictionary<XName, string> Process(StringWriter writer, XElement root, Dictionary<XName, string> context)
         {
             string summary = Regex.Replace(root.Value, "\\s+", " ", RegexOptions.Multiline);
-            writer.WriteLine("{0}\n", summary.Trim());
+            writer.WriteLine("{0}\n", summary.Trim().EscapeXml());
 
             return base.Process(writer, root, context);
         }
