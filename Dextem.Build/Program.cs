@@ -16,7 +16,7 @@ namespace Dextem.Build
                 md = dextem.Convert(file);
             }
 
-            var bytes = ASCIIEncoding.UTF8.GetBytes(md);
+            var bytes = Encoding.ASCII.GetBytes(md);
 
             using (var file = new FileStream(args[1], FileMode.Create))
             {
