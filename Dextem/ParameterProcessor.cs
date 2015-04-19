@@ -37,7 +37,7 @@ namespace Dextem
             {
                 writer.WriteLine("| {0} | *{1}*<br>{2} |",
                     paramName,
-                    this.SanitizeParameterName(context[paramName]),
+                    context[paramName].EscapeRawGenerics(),
                     Regex.Replace(root.Value, "\\s+", " ", RegexOptions.Multiline));
             }
             else

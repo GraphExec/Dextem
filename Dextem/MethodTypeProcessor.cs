@@ -19,7 +19,7 @@ namespace Dextem
         public MethodTypeProcessor(ProcessorRegistry registry) : base(registry) { }
 
         /// <summary>
-        /// Executes name processing of the curernt method 'M:' or type 'T:' &lt;member&gt; element.
+        /// Executes name processing of the current method 'M:' or type 'T:' &lt;member&gt; element.
         /// </summary>
         /// <param name="writer">The current StringWriter to use.</param>
         /// <param name="root">The current root element to process.</param>
@@ -99,7 +99,7 @@ namespace Dextem
 
                 if (isCloseOnly)
                 {
-                    parameterTypes[parameterTypes.Count - 1] += raw;
+                    parameterTypes[parameterTypes.Count - 1] += ", " + raw;
                     continue;
                 }
             }
