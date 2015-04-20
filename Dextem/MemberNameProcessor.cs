@@ -37,20 +37,25 @@ namespace Dextem
             if (memberType != "T")
             {
                 int memberNameStartIndex = this.GetMemberNameStartIndex(memberName, context["typeName"], context["assembly"]);
-                string shortMemberName = this.GetShortName(memberName, memberNameStartIndex);
+                string shortMemberName = this.GetShortName(memberName, memberType, memberNameStartIndex);
                 writer.WriteLine("\n### {0}\n", shortMemberName);
             }
 
             return base.Process(writer, root, context);
         }
 
-        private string GetShortName(string memberName, int nameStartIndex)
+        private string GetShortName(string memberName, string memberType, int nameStartIndex)
         {
             var shortMemberName = memberName.Substring(nameStartIndex);
 
             if (shortMemberName.StartsWith("#ctor"))
             {
-                return shortMemberName.Replace("#ctor", "Constructor");
+                shortMemberName = shortMemberName.Replace("#ctor", "Constructor");
+            }
+
+            if (memberType == "M" && !shortMemberName.Contains("(") && !shortMemberName.Contains(")"))
+            {
+                shortMemberName += "()";
             }
 
             return shortMemberName;
