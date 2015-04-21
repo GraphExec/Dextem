@@ -6,7 +6,7 @@
 
 See the result of Dextem at work. It processed its xml documentation and produced the following results: [Dextem API Reference](https://github.com/GraphExec/Dextem/wiki/Dextem-API-Reference).
 
-## Dextem.Build
+# Dextem.Build
 
 Meant to run Post-build, **Dextem.Build** is a console application that uses the default **Dextem** API to create a markdown file based on a project's XML Documentation file. See the full [Dextem.Build Command-Line Reference](https://github.com/GraphExec/Dextem/wiki/Dextem.Build-Command-Line-Reference).
 
