@@ -24,6 +24,8 @@ namespace Dextem
         /// <returns>The updated processing context.</returns>
         public override Dictionary<XName, string> Process(StringWriter writer, XElement root, Dictionary<XName, string> context)
         {
+            Args.IsNotNull(() => writer, () => root, () => context);
+
             var methodTypeProcessor = this.Registry.Resolve("methodType");
 
             if (methodTypeProcessor != null)
@@ -36,19 +38,19 @@ namespace Dextem
 
             if (memberType != "T")
             {
-                int memberNameStartIndex = this.GetMemberNameStartIndex(memberName, context["typeName"], context["assembly"]);
-                string shortMemberName = this.GetShortName(memberName, memberType, memberNameStartIndex);
+                int memberNameStartIndex = MemberNameProcessor.GetMemberNameStartIndex(memberName, context["typeName"], context["assembly"]);
+                string shortMemberName = MemberNameProcessor.GetShortName(memberName, memberType, memberNameStartIndex);
                 writer.WriteLine("\n### {0}\n", shortMemberName);
             }
 
             return base.Process(writer, root, context);
         }
 
-        private string GetShortName(string memberName, string memberType, int nameStartIndex)
+        private static string GetShortName(string memberName, string memberType, int nameStartIndex)
         {
             var shortMemberName = memberName.Substring(nameStartIndex);
 
-            if (shortMemberName.StartsWith("#ctor"))
+            if (shortMemberName.StartsWith("#ctor", System.StringComparison.CurrentCulture))
             {
                 shortMemberName = shortMemberName.Replace("#ctor", "Constructor");
             }
@@ -61,7 +63,7 @@ namespace Dextem
             return shortMemberName;
         }
 
-        private int GetMemberNameStartIndex(string memberName, string typeName, string assemblyName)
+        private static int GetMemberNameStartIndex(string memberName, string typeName, string assemblyName)
         {
             var index = 4 + assemblyName.Length;
 
@@ -71,13 +73,13 @@ namespace Dextem
             }
             else
             {
-                index += this.GetTypeName(memberName).Length;
+                index += MemberNameProcessor.GetTypeName(memberName).Length;
             }
 
             return index;
         }
 
-        private string GetTypeName(string memberName)
+        private static string GetTypeName(string memberName)
         {
             var result = memberName;
 

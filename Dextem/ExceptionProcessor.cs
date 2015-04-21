@@ -25,6 +25,8 @@ namespace Dextem
         /// <returns>The updated processing context.</returns>
         public override Dictionary<XName, string> Process(StringWriter writer, XElement root, Dictionary<XName, string> context)
         {
+            Args.IsNotNull(() => writer, () => root, () => context);
+
             string exName = root.Attribute("cref").Value.Substring(2);
             exName = exName.Replace(context["assembly"] + ".", "");
             exName = exName.Replace(context["typeName"] + ".", "");

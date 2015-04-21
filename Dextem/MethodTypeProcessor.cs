@@ -27,13 +27,15 @@ namespace Dextem
         /// <returns>The updated processing context.</returns>
         public override Dictionary<XName, string> Process(StringWriter writer, XElement root, Dictionary<XName, string> context)
         {
+            Args.IsNotNull(() => writer, () => root, () => context);
+
             var memberName = root.Attribute(XName.Get("name")).Value;
             char memberType = memberName[0];
 
             if (memberType == 'M')
             {
-                memberName = RearrangeTypeParametersInContext(root, memberName, context, false);
-                memberName = RearrangeParametersInContext(root, memberName, context);
+                memberName = MethodTypeProcessor.RearrangeTypeParametersInContext(root, memberName, context, false);
+                memberName = MethodTypeProcessor.RearrangeParametersInContext(root, memberName, context);
             }
 
             context["memberName"] = memberName;
@@ -41,7 +43,7 @@ namespace Dextem
             if (memberType == 'T')
             {
                 var typeNameStartIndex = 3 + context["assembly"].Length;
-                var scrubbedName = this.ReplaceForTypeParameters(root, memberName, false, context);
+                var scrubbedName = MethodTypeProcessor.ReplaceForTypeParameters(root, memberName, false, context);
                 var shortMemberName = scrubbedName.Substring(typeNameStartIndex);
                 writer.WriteLine("\n## {0}\n", shortMemberName);
                 context["typeName"] = shortMemberName;
@@ -54,7 +56,7 @@ namespace Dextem
             return base.Process(writer, root, context);
         }
 
-        private List<string> GetParameterTypes(string memberName)
+        private static List<string> GetParameterTypes(string memberName)
         {
             var parameterTypes = new List<string>();
 
@@ -107,9 +109,9 @@ namespace Dextem
             return parameterTypes;
         }
 
-        private string RearrangeParametersInContext(XElement methodMember, string memberName, Dictionary<XName, string> context)
+        private static string RearrangeParametersInContext(XElement methodMember, string memberName, Dictionary<XName, string> context)
         {
-            var parameterTypes = this.GetParameterTypes(memberName);
+            var parameterTypes = MethodTypeProcessor.GetParameterTypes(memberName);
 
             List<XElement> paramElems = new List<XElement>(methodMember.Elements("param"));
             if (parameterTypes.Count != paramElems.Count)
@@ -124,7 +126,7 @@ namespace Dextem
                 XElement paramElem = paramElems[i];
                 string paramName = paramElem.Attribute(XName.Get("name")).Value;
                 string paramType = parameterTypes[i];
-                if (newParamString != "")
+                if (newParamString.Any())
                 {
                     newParamString += ", ";
                 }
@@ -139,12 +141,12 @@ namespace Dextem
             return newMethodPrototype;
         }
 
-        private string RearrangeTypeParametersInContext(XElement member, string memberName, Dictionary<XName, string> context, bool skipReplace)
+        private static string RearrangeTypeParametersInContext(XElement member, string memberName, Dictionary<XName, string> context, bool skipReplace)
         {
             var methodPrototype = memberName;
             if (!skipReplace)
             {
-                methodPrototype = this.ReplaceForTypeParameters(member, memberName, true, context);
+                methodPrototype = MethodTypeProcessor.ReplaceForTypeParameters(member, memberName, true, context);
             }
 
             var matches = Regex.Matches(methodPrototype, "\\{(`\\d)+}"); //Matches: {'0} && {'1'2} //M:GraphExec.BaseEventAggregator.GetEventType(GraphExec.IHandle{'0})
@@ -200,7 +202,7 @@ namespace Dextem
             return methodPrototype;
         }
 
-        private string ReplaceForTypeParameters(XElement methodMember, string memberName, bool methodType, Dictionary<XName, string> context)
+        private static string ReplaceForTypeParameters(XElement methodMember, string memberName, bool methodType, Dictionary<XName, string> context)
         {
             string methodPrototype = memberName;
             var matches = Regex.Matches(methodPrototype, "\\`(\\d)"); //Matches: '1 and 1 //M:GraphExec.BaseEventAggregator.GetEventType`1
@@ -238,7 +240,7 @@ namespace Dextem
             var paramMatches = Regex.Matches(methodPrototype, "\\{``\\d}");
             if (paramMatches.Count > 0) // {``0} and {``1} and {``2``3}
             {
-                methodPrototype = this.RearrangeTypeParametersInContext(methodMember, methodPrototype, context, true);
+                methodPrototype = MethodTypeProcessor.RearrangeTypeParametersInContext(methodMember, methodPrototype, context, true);
             }
 
             if (methodType)

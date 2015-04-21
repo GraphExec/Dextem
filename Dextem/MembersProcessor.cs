@@ -24,6 +24,8 @@ namespace Dextem
         /// <returns>The updated processing context.</returns>
         public override Dictionary<XName, string> Process(StringWriter writer, XElement root, Dictionary<XName, string> context)
         {
+            Args.IsNotNull(() => writer, () => root, () => context);
+
             var members = new List<XElement>(root.Elements("member"));
             members.Sort((a, b) =>
             {

@@ -25,6 +25,8 @@ namespace Dextem
         /// <returns>The updated processing context.</returns>
         public override Dictionary<XName, string> Process(StringWriter writer, XElement root, Dictionary<XName, string> context)
         {
+            Args.IsNotNull(() => writer, () => root, () => context);
+
             if (context["lastNode"] != "typeparam")
             {
                 writer.WriteLine("###### Type Parameters");

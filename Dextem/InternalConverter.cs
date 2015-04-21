@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml.Linq;
 
@@ -20,14 +21,23 @@ namespace Dextem
 
         internal override string Convert(Stream stream)
         {
+            Args.IsNotNull(() => stream);
+
             var xdoc = XDocument.Load(stream);
-            var writer = new StringWriter();
-            this.InternalConvert(writer, xdoc.Root);
-            return writer.ToString();
+            var md = string.Empty;
+
+            using (var writer = new StringWriter(CultureInfo.CurrentCulture))
+            {
+                this.InternalConvert(writer, xdoc.Root);
+                md = writer.ToString();
+            }
+            return md;
         }
 
         private void InternalConvert(StringWriter writer, XElement root)
         {
+            Args.IsNotNull(() => writer, () => root);
+
             var processor = this.m_registry.Resolve(root.Name);
 
             if (processor != null)
