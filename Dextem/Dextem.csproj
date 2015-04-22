@@ -86,10 +86,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PackageStore\Dextem.1.0.0.1.nupkg" />
+    <None Include="PackageStore\Dextem.1.0.0.2.nupkg" />
+    <None Include="PackageStore\Dextem.1.0.0.3.nupkg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PackageStore\lib\Dextem.dll" />
     <None Include="PackageStore\tools\Dextem.Build.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PackageStore\tools\Dextem.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
@@ -102,6 +107,7 @@ copy $(TargetPath) lib
 copy J:\Code\VS2013\GraphExec\Dextem\Dextem.Build\bin\Release\Dextem.Build.exe tools
 
 copy /Y lib $(ProjectDir)PackageStore\lib
+copy /Y lib $(ProjectDir)PackageStore\tools
 copy /Y tools $(ProjectDir)PackageStore\tools</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
