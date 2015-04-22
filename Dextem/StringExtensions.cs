@@ -12,10 +12,5 @@ namespace Dextem
         {
             return _this.Replace("{", "<").Replace("}", ">").EscapeXml();
         }
-
-        internal static bool Any(this string _this)
-        {
-            return _this.Length > 0;
-        }
     }
 }

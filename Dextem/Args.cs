@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -42,11 +41,11 @@ namespace Dextem
         {
             if (selectors == null) throw new ArgumentNullException("selectors");
 
-            if (!selectors.Any()) throw new ArgumentNullException("selectors");
+            if (selectors.Length == 0) throw new ArgumentNullException("selectors");
 
             foreach (var selector in selectors)
             {
-                Args.IsNotNull(selector);
+                Args.IsNotNull<object>(selector);
             }
         }
     }

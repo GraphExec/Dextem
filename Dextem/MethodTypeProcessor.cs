@@ -126,7 +126,7 @@ namespace Dextem
                 XElement paramElem = paramElems[i];
                 string paramName = paramElem.Attribute(XName.Get("name")).Value;
                 string paramType = parameterTypes[i];
-                if (newParamString.Any())
+                if (newParamString.Length > 0)
                 {
                     newParamString += ", ";
                 }

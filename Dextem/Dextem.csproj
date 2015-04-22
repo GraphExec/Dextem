@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Dextem.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -84,23 +84,25 @@
     </Compile>
     <Compile Include="XNodeExtensions.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="PackageStore\Dextem.1.0.0.1.nupkg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PackageStore\lib\Dextem.dll" />
+    <None Include="PackageStore\tools\Dextem.Build.exe" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call J:\Code\VS2013\GraphExec\Dextem\Dextem.Build\bin\Release\Dextem.Build.exe $(TargetDir)$(ProjectName).XML Dextem.md
-
-call J:\Programs\Nuget\nuget config
-
-call J:\Programs\Nuget\nuget spec -Force -NonInteractive
+    <PostBuildEvent>call J:\Code\VS2013\GraphExec\Dextem\Dextem.Build\bin\Release\Dextem.Build.exe $(TargetDir)$(ProjectName).XML $(ProjectName).md
 
 mkdir lib
+mkdir tools
 
 copy $(TargetPath) lib
-
-call J:\Programs\Nuget\nuget pack "$(ProjectPath)" -Properties "Configuration=$(Configuration);Platform=$(Platform);Authors=GraphExec;Description=Dextem is a Portable Class Library that converts Visual Studio XML Documentation into GitHub Flavored Markdown." -Verbosity detailed -NonInteractive -MinClientVersion 2.5
+copy J:\Code\VS2013\GraphExec\Dextem\Dextem.Build\bin\Release\Dextem.Build.exe tools
 
 copy /Y lib $(ProjectDir)PackageStore\lib
-copy /Y Dextem.*.nupkg $(ProjectDir)PackageStore
-copy /Y Package.nuspec $(ProjectDir)PackageStore</PostBuildEvent>
+copy /Y tools $(ProjectDir)PackageStore\tools</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
